@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Space Theme</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- AOS Animation Library -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6c63ff;
+            --secondary-color: #4a4361;
+            --text-color: #333;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+            --star-color: #ffffff;
+        }
+
+        .dark-mode {
+            --primary-color: #a29aff;
+            --secondary-color: #8c82e6;
+            --text-color: #e0e0e0;
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --border-color: #2d2d2d;
+            --star-color: #ffffff;
+        }
+
+        * {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            background-color: var(--card-bg) !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .nav-link {
+            color: var(--text-color) !important;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+            margin: 0 0.25rem;
+            border-radius: 5px;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+            transform: translateY(-2px);
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.7;
+        }
+
+        section {
+            padding: 6rem 0;
+            position: relative;
+        }
+
+        .section-title {
+            font-weight: 700;
+            margin-bottom: 3rem;
+            color: var(--primary-color);
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary-color);
+            transition: width 0.3s;
+        }
+
+        .section-title:hover::after {
+            width: 100%;
+        }
+
+        #home {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 2rem;
+            background-color: rgba(var(--card-bg-rgb), 0.8);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: var(--text-color);
+        }
+
+        .btn-custom {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(108, 99, 255, 0.4);
+        }
+
+        .btn-custom:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(108, 99, 255, 0.6);
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .theme-toggle {
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            width: 40px;
+            height: 40px;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(30deg);
+        }
+
+        .card {
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .skill-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.5rem;
+            border-radius: 10px;
+            background-color: var(--card-bg);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+
+        .skill-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .skill-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 2rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 0.5rem;
+            width: 1rem;
+            height: 1rem;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: -1.5rem;
+            top: 1.5rem;
+            width: 2px;
+            height: calc(100% - 1rem);
+            background-color: var(--border-color);
+        }
+
+        .contact-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .contact-icon {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-right: 1rem;
+            transition: all 0.3s;
+        }
+
+        .contact-text {
+            color: var(--text-color);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .social-link:hover {
+            transform: translateY(-5px) rotate(360deg);
+            background-color: var(--secondary-color);
+        }
+
+        footer {
+            background-color: var(--card-bg);
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 3rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        #back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 99;
+            opacity: 0;
+            transition: all 0.3s;
+            cursor: pointer;
+            background-color: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        #back-to-top.visible {
+            opacity: 1;
+        }
+
+        #back-to-top:hover {
+            transform: translateY(-5px);
+        }
+
+        .portfolio-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .portfolio-img {
+            transition: all 0.5s;
+            border-radius: 10px;
+        }
+
+        .portfolio-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(108, 99, 255, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: all 0.5s;
+            border-radius: 10px;
+        }
+
+        .portfolio-item:hover .portfolio-overlay {
+            opacity: 1;
+        }
+
+        .portfolio-item:hover .portfolio-img {
+            transform: scale(1.1);
+        }
+
+        /* Star animation properties */
+        .star {
+            position: absolute;
+            background-color: var(--star-color);
+            border-radius: 50%;
+            animation: twinkle linear infinite;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        
+        /* Form styles */
+        .form-control {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            border-radius: 8px;
+            padding: 0.8rem 1rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(108, 99, 255, 0.25);
+        }
+        
+        /* Floating labels */
+        .floating-label {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .floating-label input, .floating-label textarea {
+            height: auto;
+            padding: 1rem 0.75rem;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+        }
+        
+        .floating-label label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            padding: 1rem 0.75rem;
+            pointer-events: none;
+            border: 1px solid transparent;
+            transform-origin: 0 0;
+            transition: opacity .1s ease-in-out, transform .1s ease-in-out;
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+        
+        .floating-label input:focus ~ label,
+        .floating-label input:not(:placeholder-shown) ~ label,
+        .floating-label textarea:focus ~ label,
+        .floating-label textarea:not(:placeholder-shown) ~ label {
+            opacity: 1;
+            transform: scale(.85) translateY(-0.75rem) translateX(0.15rem);
+            background-color: var(--card-bg);
+            padding: 0 0.5rem;
+            color: var(--primary-color);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .hero-content {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            
+            section {
+                padding: 4rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Space Background Canvas -->
+    <div id="canvas-container">
+        <canvas id="space-canvas"></canvas>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="#home">
+                <span style="font-weight: 800; color: var(--primary-color);">Portfolio</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#skills">Skills</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#experience">Experience</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#portfolio">Portfolio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                    <li class="nav-item ms-3">
+                        <div class="theme-toggle" id="theme-toggle">
+                            <i class="fas fa-moon"></i>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="hero-content text-center" data-aos="fade-up">
+                        <h5 class="hero-greeting">Hello, I am</h5>
+                        <h1 class="hero-title">Rajesh Chheda</h1>
+                        <h3 class="hero-subtitle">
+                            <span class="typing-text"></span>
+                            <span class="cursor">|</span>
+                        </h3>
+                        <div class="d-flex justify-content-center gap-3 mt-4">
+                            <a href="#contact" class="btn btn-custom">Contact Me</a>
+                            <a href="#portfolio" class="btn btn-outline-secondary">View Work</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <img src="/static/image1.jpg" alt="John Doe" width="350" height="350" class="img-fluid hero-image" data-aos="fade-left" data-aos-delay="300">
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <style>
+        #home {
+            padding: 100px 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        
+        .hero-greeting {
+            font-size: 1.8rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #6c757d;
+        }
+        
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .cursor {
+            display: inline-block;
+            margin-left: 3px;
+            width: 3px;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        .hero-image {
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn {
+            font-size: 1.1rem;
+            padding: 0.6rem 1.5rem;
+        }
+    </style>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const texts = [
+            "Full Stack Developer",
+            "UI/UX Designer",
+            "Web Developer",
+            "Creative Thinker"
+        ];
+        
+        let textIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typingDelay = 100;
+        const erasingDelay = 50;
+        const newTextDelay = 2000;
+        
+        function typeEffect() {
+            const currentText = texts[textIndex];
+            const typingText = document.querySelector('.typing-text');
+            
+            if (isDeleting) {
+                // Removing characters
+                typingText.textContent = currentText.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                // Adding characters
+                typingText.textContent = currentText.substring(0, charIndex + 1);
+                charIndex++;
+            }
+            
+            // Determine the delay based on whether typing or deleting
+            let delay = isDeleting ? erasingDelay : typingDelay;
+            
+            // If completed typing the word
+            if (!isDeleting && charIndex === currentText.length) {
+                delay = newTextDelay;  // Pause at end of word
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                textIndex = (textIndex + 1) % texts.length;  // Move to next text
+            }
+            
+            setTimeout(typeEffect, delay);
+        }
+        
+        // Start the typing animation
+        typeEffect();
+    });
+    </script>
+
+    <!-- About Section -->
+    <section id="about"> 
+        <div class="container"> 
+          <h2 class="section-title" data-aos="fade-right">About Me</h2> 
+          <div class="row"> 
+            <div class="col-lg-6" data-aos="fade-right" data-aos-delay="200"> 
+              <div class="card mb-4 dark-mode-card"> 
+                <div class="card-body"> 
+                  <h3 class="card-title mb-4 dark-mode-text">Who I Am</h3> 
+                  <p class="card-text dark-mode-text"> 
+                    Hello! I'm Rajesh, a passionate full-stack developer with over a year of experience in building modern web applications. I specialize in creating responsive, user-friendly interfaces that deliver exceptional user experiences. 
+                  </p> 
+                  <p class="card-text dark-mode-text"> 
+                    My journey in web development began at the Dwarkadas Jivanlal Sanghvi College Of Engineering where I am studying Artificial Intelligence and Data Science. Since then, I've worked with my startups and established companies, helping them achieve their digital goals. 
+                  </p> 
+                  <p class="card-text dark-mode-text"> 
+                    When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or hiking in the great outdoors. 
+                  </p> 
+                </div> 
+              </div> 
+            </div> 
+            <div class="col-lg-6" data-aos="fade-left" data-aos-delay="300"> 
+              <div class="card h-100 dark-mode-card"> 
+                <div class="card-body"> 
+                  <h3 class="card-title mb-4 dark-mode-text">Personal Info</h3> 
+                  <ul class="list-group list-group-flush"> 
+                    <li class="list-group-item bg-transparent dark-mode-text"> 
+                      <strong>Name:</strong> Rajesh Chheda
+                    </li> 
+                    <li class="list-group-item bg-transparent dark-mode-text"> 
+                      <strong>Age:</strong> 20 Years 
+                    </li> 
+                    <li class="list-group-item bg-transparent dark-mode-text"> 
+                      <strong>Location:</strong> Thane , Maharashtra , India
+                    </li> 
+                    <li class="list-group-item bg-transparent dark-mode-text"> 
+                      <strong>Experience:</strong> 2 Years 
+                    </li> 
+                    <li class="list-group-item bg-transparent dark-mode-text"> 
+                      <strong>Freelance:</strong> Available 
+                    </li> 
+                    <li class="list-group-item bg-transparent dark-mode-text"> 
+                      <strong>Email:</strong> therajeshchheda@gmail.com
+                    </li> 
+                  </ul> 
+                  <div class="mt-4"> 
+                    <a href="#" class="btn btn-custom">Download CV</a> 
+                  </div> 
+                </div> 
+              </div> 
+            </div> 
+          </div> 
+        </div> 
+      </section>
+      
+      <style>
+        /* Dark mode styling */
+        body.dark-mode .dark-mode-card {
+          background-color: #2d2d2d;
+        }
+      
+        body.dark-mode .dark-mode-text {
+          color: #ffffff;
+        }
+      
+        body.dark-mode .list-group-item.bg-transparent {
+          color: #ffffff;
+        }
+      
+        /* If you're using Bootstrap's dark mode toggle */
+        [data-bs-theme="dark"] .dark-mode-card {
+          background-color: #2d2d2d;
+        }
+        
+        [data-bs-theme="dark"] .dark-mode-text {
+          color: #ffffff;
+        }
+        
+        [data-bs-theme="dark"] .list-group-item.bg-transparent {
+          color: #ffffff;
+        }
+      </style>
+    <!-- Skills Section -->
+    <section id="skills">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-right">My Skills</h2>
+            <div class="row g-4">
+                <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="skill-item">
+                        <i class="fab fa-html5 skill-icon"></i>
+                        <h4>HTML5</h4>
+                        <div class="progress w-100 mt-3">
+                            <div class="progress-bar" role="progressbar" style="width: 95%; background-color: var(--primary-color);" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="skill-item">
+                        <i class="fab fa-css3-alt skill-icon"></i>
+                        <h4>CSS3</h4>
+                        <div class="progress w-100 mt-3">
+                            <div class="progress-bar" role="progressbar" style="width: 90%; background-color: var(--primary-color);" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Django Skill Item -->
+<div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-delay="200">
+    <div class="skill-item">
+        <i class="fab fa-python skill-icon"></i>
+        <h4>Django</h4>
+        <div class="progress w-100 mt-3">
+            <div class="progress-bar" role="progressbar" style="width: 100%; background-color: var(--primary-color);" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Python Skill Item -->
+<div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-delay="300">
+    <div class="skill-item">
+        <i class="fab fa-python skill-icon"></i>
+        <h4>Python</h4>
+        <div class="progress w-100 mt-3">
+            <div class="progress-bar" role="progressbar" style="width: 92%; background-color: var(--primary-color);" aria-valuenow="92" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>
+</div>
+
+<!-- SQL Skill Item -->
+<div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-delay="400">
+    <div class="skill-item">
+        <i class="fas fa-database skill-icon"></i>
+        <h4>SQL</h4>
+        <div class="progress w-100 mt-3">
+            <div class="progress-bar" role="progressbar" style="width: 100%; background-color: var(--primary-color);" aria-valuenow="88" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>
+</div>
+
+<!-- DSA Skill Item -->
+<div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-delay="500">
+    <div class="skill-item">
+        <i class="fas fa-code skill-icon"></i>
+        <h4>DSA</h4>
+        <div class="progress w-100 mt-3">
+            <div class="progress-bar" role="progressbar" style="width: 80%; background-color: var(--primary-color);" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>
+</div>
+                <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="skill-item">
+                        <i class="fab fa-js skill-icon"></i>
+                        <h4>JavaScript</h4>
+                        <div class="progress w-100 mt-3">
+                            <div class="progress-bar" role="progressbar" style="width: 85%; background-color: var(--primary-color);" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="skill-item">
+                        <i class="fab fa-react skill-icon"></i>
+                        <h4>React</h4>
+                        <div class="progress w-100 mt-3">
+                            <div class="progress-bar" role="progressbar" style="width: 80%; background-color: var(--primary-color);" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="skill-item">
+                        <i class="fab fa-node-js skill-icon"></i>
+                        <h4>Node.js</h4>
+                        <div class="progress w-100 mt-3">
+                            <div class="progress-bar" role="progressbar" style="width: 75%; background-color: var(--primary-color);" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="skill-item">
+                        <i class="fab fa-bootstrap skill-icon"></i>
+                        <h4>Bootstrap</h4>
+                        <div class="progress w-100 mt-3">
+                            <div class="progress-bar" role="progressbar" style="width: 90%; background-color: var(--primary-color);" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="skill-item">
+                        <i class="fas fa-database skill-icon"></i>
+                        <h4>MongoDB</h4>
+                        <div class="progress w-100 mt-3">
+                            <div class="progress-bar" role="progressbar" style="width: 70%; background-color: var(--primary-color);" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="skill-item">
+                        <i class="fab fa-git-alt skill-icon"></i>
+                        <h4>Git</h4>
+                        <div class="progress w-100 mt-3">
+                            <div class="progress-bar" role="progressbar" style="width: 85%; background-color: var(--primary-color);" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-right">Experience & Education</h2>
+            <div class="row">
+                <div class="col-lg-6" data-aos="fade-right" data-aos-delay="200">
+                    <h3 class="mb-4">Work Experience</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Founder & CEO</h4>
+                                    <h6 class="card-title">FurniCure (2024 - Present)</h6>
+                                    <p class="card-text">
+Founder & CEO of an online Furniture Shopping Platform, leading a team of 6 people , Collaborated with 20+ shops all over mumbai.                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Founder & CEO</h4>
+                                    <h6 class="card-title">StudyMate(2023-Present)</h6>
+                                    <p class="card-text">
+Built an online learning for science students, opting for Entrance Exams like JEE , MHT-CET and Engineering.                                   </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Physics & Maths Lecturer</h4>
+                                    <h6 class="card-title">RD's Coaching & KPPT Classes</h6>
+                                    <p class="card-text">
+Teacher of Physics and Maths for 11th and 12th standard students                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Cleared Final Round</h4>
+                                    <h6 class="card-title">Hackverse 2025</h6>
+                                    <p class="card-text">
+                                        I recently participated in HackVerse 2025, my first-ever 24-hour offline hackathon organized by CSI-WIET at Watumull Institute, Ulhasnagar.
+                                        Our team worked on an AI-powered Course Outcome - Program Outcome Mapping System and made it to the Top 6 finalists out of 40+ teams.
+                                        The experience taught me the value of teamwork, resilience, and applying AI to real-world problems.
+                                        Though we didn’t win, the journey was an incredible learning experience.                                   </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left" data-aos-delay="300">
+                    <h3 class="mb-4">Education</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">B. Tech in Artificial Intelligence & Data Science</h4>
+                                    <h6 class="card-title">Dwarkadas Jivanlal Sanghvi College of Engineering(2023-2027)</h6>
+                                    <p class="card-text">
+Pursuing B.tech in AI&DS , currently in second year.                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">12th Science</h4>
+                                    <h6 class="card-title">Achiever's College</h6>
+                                    <p class="card-text">
+Completed 12th from Achiever's College , Scored 97%ile in MHT-CET exam.                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="timeline-item">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Frontend Development Certification</h4>
+                                    <h6 class="card-title">Online Academy (2014)</h6>
+                                    <p class="card-text">
+                                        Completed an intensive 6-month program covering advanced HTML, CSS, JavaScript, and responsive design principles.
+                                    </p>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <style>
+      /* Dark mode styling - only for card-text class */
+      body.dark-mode .card-text {
+        color: #ffffff;
+      }
+    
+      /* If you're using Bootstrap's dark mode toggle */
+      [data-bs-theme="dark"] .card-text {
+        color: #ffffff;
+      }
+    </style>
+    <!-- Portfolio Section -->
+    <section id="portfolio">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-right">My Projects</h2>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="portfolio-item">
+                        <img src="/static/mapify.png" alt="E-commerce Website" width="400" height="300" class="img-fluid portfolio-img">
+                        <div class="portfolio-overlay">
+                            <h4 class="text-white mb-3">Course & Program Outcome Mapping Full-Stack website</h4>
+                            <p class="text-white">HTML, CSS, JavaScript, React, Django</p>
+                            <a href="https://github.com/therajesh1/hackverse" class="btn btn-light mt-3">View Project</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="portfolio-item">
+                        <img src="/static/studymate.png" alt="E-commerce Website" width="400" height="300" class="img-fluid portfolio-img">
+                        <div class="portfolio-overlay">
+                            <h4 class="text-white mb-3">StudyMate - Ed-tech Platform</h4>
+                            <p class="text-white">HTML, Bootstrap, JavaScript,Django</p>
+                            <a href="https://studymatee.vercel.app/home" class="btn btn-light mt-3">View Project</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="portfolio-item">
+                        <img src="/static/todo.jpg" alt="E-commerce Website" width="400" height="300" class="img-fluid portfolio-img">
+                        <div class="portfolio-overlay">
+                            <h4 class="text-white mb-3">Task Management App</h4>
+                            <p class="text-white">Django, SQL</p>
+                            <a href="https://github.com/therajesh1/ToDolists" class="btn btn-light mt-3">View Project</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="portfolio-item">
+                        <img src="/static/ice.jpg" alt="E-commerce Website" width="400" height="300" class="img-fluid portfolio-img">
+                        <div class="portfolio-overlay">
+                            <h4 class="text-white mb-3">Ice Cream Shopping</h4>
+                            <p class="text-white">JavaScript, API Integration, CSS</p>
+                            <a href="https://github.com/therajesh1/Krishna-Icecreams" class="btn btn-light mt-3">View Project</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="portfolio-item">
+                        <img src="/static/ai.png" alt="E-commerce Website" width="400" height="300" class="img-fluid portfolio-img">
+                        <div class="portfolio-overlay">
+                            <h4 class="text-white mb-3">Knowledge based chatbot</h4>
+                            <p class="text-white">HTML, CSS, JavaScript, Django</p>
+                            <a href="https://github.com/therajesh1/aichatbot" class="btn btn-light mt-3">View Project</a>
+                        </div>
+                    </div>
+                </div> 
+                <!-- <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="portfolio-item">
+                        <img src="/api/placeholder/400/300" alt="Social Media App" class="img-fluid portfolio-img">
+                        <div class="portfolio-overlay">
+                            <h4 class="text-white mb-3">Social Media App</h4>
+                            <p class="text-white">React, Firebase, Material UI</p>
+                            <a href="#" class="btn btn-light mt-3">View Project</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="portfolio-item">
+                        <img src="/api/placeholder/400/300" alt="Restaurant Website" class="img-fluid portfolio-img">
+                        <div class="portfolio-overlay">
+                            <h4 class="text-white mb-3">Restaurant Website</h4>
+                            <p class="text-white">HTML, CSS, JavaScript, PHP</p>
+                            <a href="#" class="btn btn-light mt-3">View Project</a>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-right">Contact Me</h2>
+            <div class="row">
+                <div class="col-lg-5" data-aos="fade-right" data-aos-delay="200">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h3 class="card-title mb-4">Get In Touch</h3>
+                            <div class="contact-info">
+                                <i class="fas fa-map-marker-alt contact-icon"></i>
+                                <span class="contact-text">Thane</span>
+                            </div>
+                            <div class="contact-info">
+                                <i class="fas fa-envelope contact-icon"></i>
+                                <span class="contact-text">therajeshchheda@gmail.com</span>
+                            </div>
+                            <div class="contact-info">
+                                <i class="fas fa-phone contact-icon"></i>
+                                <span class="contact-text">8433541311</span>
+                            </div>
+                           
+                            <div class="social-links">
+                                <a href="https://www.linkedin.com/in/rajesh-chheda-070274269/" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="https://github.com/therajesh1" class="social-link"><i class="fab fa-github"></i></a>
+                                <!-- <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                                <a href="#" class="social-link"><i class="fab fa-instagram"></i></a> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7" data-aos="fade-left" data-aos-delay="300">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title mb-4">Send Me a Message</h3>
+                            <form id="contact-form">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="floating-label">
+                                            <input type="text" class="form-control" id="name" placeholder=" " required>
+                                            <label for="name">Your Name</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="floating-label">
+                                            <input type="email" class="form-control" id="email" placeholder=" " required>
+                                            <label for="email">Email Address</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="floating-label">
+                                            <input type="text" class="form-control" id="subject" placeholder=" " required>
+                                            <label for="subject">Subject</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="floating-label">
+                                            <textarea class="form-control" id="message" rows="5" placeholder=" " required></textarea>
+                                            <label for="message">Your Message</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-custom">Send Message</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <p>© 2025 Rajesh Chheda | All Rights Reserved</p>
+                    <p class="mb-0">Designed with <i class="fas fa-heart" style="color: var(--primary-color);"></i> by Rajesh Chheda</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <div id="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS Animation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // Initialize AOS Animation Library
+        AOS.init({
+            duration: 1000,
+            once: true,
+            mirror: false
+        });
+
+        // Dark/Light Mode Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const icon = themeToggle.querySelector('i');
+        
+        // Check for saved theme preference or default to light
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            
+            // Update icon
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+        
+        // Back to Top Button
+        const backToTopButton = document.getElementById('back-to-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Smooth Scrolling for Nav Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const target = document.querySelector(this.getAttribute('href'));
+                
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 70,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Contact Form Handler (for demo purposes)
+        const contactForm = document.getElementById('contact-form');
+        
+        if (contactForm) {
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert('Thank you for your message! This is a demo form, so no message has been sent.');
+                contactForm.reset();
+            });
+        }
+        
+        // Space Background Animation
+        (function() {
+            const canvas = document.getElementById('space-canvas');
+            const ctx = canvas.getContext('2d');
+            let stars = [];
+            const count = 150;
+            let isDarkMode = document.body.classList.contains('dark-mode');
+            
+            // Set canvas size
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                createStars();
+            }
+            
+            // Create stars
+            function createStars() {
+                stars = [];
+                for (let i = 0; i < count; i++) {
+                    const star = {
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        radius: Math.random() * 2,
+                        opacity: Math.random(),
+                        speed: Math.random() * 0.05,
+                        opacityChange: Math.random() * 0.01
+                    };
+                    stars.push(star);
+                }
+            }
+            
+            // Update and draw stars
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                isDarkMode = document.body.classList.contains('dark-mode');
+                const starColor = isDarkMode ? 'rgba(255, 255, 255,' : 'rgba(108, 99, 255,';
+                
+                stars.forEach(star => {
+                    // Update star opacity for twinkling effect
+                    star.opacity += star.opacityChange;
+                    
+                    if (star.opacity <= 0 || star.opacity >= 1) {
+                        star.opacityChange = -star.opacityChange;
+                    }
+                    
+                    // Draw star
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = starColor + star.opacity + ')';
+                    ctx.fill();
+                    
+                    // Slowly move stars
+                    star.y += star.speed;
+                    
+                    // Reset position if star moves off screen
+                    if (star.y > canvas.height) {
+                        star.y = 0;
+                        star.x = Math.random() * canvas.width;
+                    }
+                });
+                
+                requestAnimationFrame(animate);
+            }
+            
+            // Initialize
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+            animate();
+        })();
+        
+        // Add navigation active state based on scroll position
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            let current = '';
+            
+            sections.forEach((section) => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.clientHeight;
+                
+                if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach((link) => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>                                
